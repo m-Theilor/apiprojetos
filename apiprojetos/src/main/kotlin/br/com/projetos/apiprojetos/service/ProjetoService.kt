@@ -1,40 +1,43 @@
 package br.com.projetos.apiprojetos.service
 
+import br.com.projetos.apiprojetos.dto.NovoProjetoForm
+import br.com.projetos.apiprojetos.dto.ProjetoView
 import br.com.projetos.apiprojetos.model.Projeto
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 @Service
-class ProjetoService(private var projetos: List<Projeto>) {
+class ProjetoService(private var projetos: List<Projeto> = ArrayList()) {
 
-    init {
-        val projeto1 = Projeto(
-            id = 1,
-            titulo = "Projeto Exemplo1",
-            descricao = "Projeto modelo",
-        )
-
-        val projeto2 = Projeto(
-            id = 2,
-            titulo = "Projeto Exemplo2",
-            descricao = "Projeto modelo",
-        )
-
-        val projeto3 = Projeto(
-            id = 3,
-            titulo = "Projeto Exemplo3",
-            descricao = "Projeto modelo",
-        )
-        projetos =  Arrays.asList(projeto1, projeto2, projeto3)
+    fun listar(): List<ProjetoView> {
+        return projetos.stream().map { p -> ProjetoView(
+            id = p.id,
+            titulo = p.titulo,
+            descricao = p.descricao,
+            status = p.status,
+            dataCriacao = p.dataCriacao
+        )}.collect(Collectors.toList())
     }
 
-    fun listar(): List<Projeto> {
-        return projetos
-    }
-
-    fun buscarPorId(id: Long): Projeto {
-        return projetos.stream().filter({
+    fun buscarPorId(id: Long): ProjetoView {
+        val projeto = projetos.stream().filter{
             p -> p.id == id
-        }).findFirst().get()
+        }.findFirst().get()
+        return ProjetoView(
+                id = projeto.id,
+                titulo = projeto.titulo,
+                descricao = projeto.descricao,
+                status = projeto.status,
+                dataCriacao = projeto.dataCriacao
+        )
+    }
+
+    fun cadastrar(dto: NovoProjetoForm) {
+        projetos = projetos.plus(Projeto(
+            id = projetos.size.toLong() + 1,
+            titulo = dto.titulo,
+            descricao = dto.descricao
+        ))
     }
 }
