@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class Projeto(
 
-    val id: Long? = null,
+    var id: Long? = null,
     val titulo: String,
     val descricao: String,
     val dataCriacao: LocalDateTime = LocalDateTime.now(),
