@@ -1,0 +1,7 @@
+spring:
+    datasource:
+        name: projetos
+        driver-class-name: org.postgresql.Driver
+        url: jabc:postgresql://localhost:5432/projetos
+        username: projetos
+        passaword: projetos
