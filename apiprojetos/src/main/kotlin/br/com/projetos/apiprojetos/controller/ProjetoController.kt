@@ -8,6 +8,7 @@ import br.com.projetos.apiprojetos.service.ProjetoService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 
@@ -26,6 +27,7 @@ class ProjetoController(private val service: ProjetoService) {
     }
 
     @PostMapping
+    @Transactional
     fun cadastrar(
         @RequestBody @Valid dto: NovoProjetoForm,
         uriBuilder: UriComponentsBuilder
@@ -36,6 +38,7 @@ class ProjetoController(private val service: ProjetoService) {
     }
 
     @PutMapping
+    @Transactional
     fun atualizar(@RequestBody @Valid form: AtualizaProjetoForm): ResponseEntity<ProjetoView> {
         val projetoView = service.atualizar(form)
         return ResponseEntity.ok(projetoView)
@@ -43,6 +46,7 @@ class ProjetoController(private val service: ProjetoService) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     fun deletar(@PathVariable id: Long){
         service.deletar(id)
     }
